@@ -110,7 +110,7 @@ function getCurrentPrice(coin, vue) {
     let http = new XMLHttpRequest();
     let cors_proxy = 'https://cors-anywhere.herokuapp.com/';
     if (coin == 'btc') {
-		var api = cors_proxy + 'https://www.bitstamp.net/api/ticker/';
+		var api = 'https://www.bitstamp.net/api/ticker/';
     } 
     http.open("GET", api, true);
     http.onload = function() {
