@@ -7,19 +7,16 @@
 </head>
 <body>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
 <script src="script.js"></script>
 
 <div id="container">
   <p id="diffUp"></p>
   <p id="animatedPrice"></p>
   <p id="diffDown"></p>
+  <input type="hidden" id="lastPrice" />
 </div>
 
-<div id="debugBox" style="display:none;">
-  First changed index: <span id="debugFirstChangedIndex"></span><br/>
-  Diff: <span id="debugDiff"></span><br/>
-</div>
 </body>
 </html>

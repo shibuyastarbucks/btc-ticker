@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap");
 
 html, body {
   background: #000;  /* fallback for old browsers */
@@ -21,11 +21,11 @@ p {
 }
 
 .pump {
-  animation: color-pump 10s;
+  animation: color-pump 7s;
 }
 
 .dump {
-  animation: color-dump 10s;
+  animation: color-dump 7s;
 }
 
 @keyframes color-pump {
