@@ -21,11 +21,11 @@ p {
 }
 
 .pump {
-  animation: color-pump 7s;
+  animation: color-pump 3s;
 }
 
 .dump {
-  animation: color-dump 7s;
+  animation: color-dump 3s;
 }
 
 @keyframes color-pump {
@@ -34,7 +34,7 @@ p {
 }
 
 @keyframes color-dump {
-  0% { color: #ff0285; }
+  0% { color: #ff00ad; }
   100% { color: #fff; }
 }
 
@@ -47,5 +47,5 @@ p {
 }
 
 #diffDown {
-	color: #ff0285;
+	color: #ff00ad;
 }

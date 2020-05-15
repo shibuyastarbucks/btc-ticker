@@ -1,3 +1,11 @@
+let profileFactor = window.location.hash.substr(1);
+let digitsPrecision = 2;
+if (!isBlank(profileFactor) && Number.isFinite(profileFactor)){
+  profileFactor = parseFloat(profileFactor);
+  digitsPrecision = 0;
+}
+const BlankChar = "&#8205;";
+
 window.onload = function() {
   let rr = 3; // refresh rate in seconds
   let price = new Vue({
@@ -20,24 +28,40 @@ window.onload = function() {
   }, rr * 1000);
 }
 
-const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
-ws.onmessage = function(evt) {
-  try {
-    let msg = JSON.parse(evt.data);
-    $("#lastPrice").val(msg.p);
+function connectWebsocket() {
+  const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
+
+  ws.onmessage = function(event) {
+    try {
+      let message = JSON.parse(event.data);
+      $("#lastPrice").val(message.p);
+    }
+    catch(e) {
+      console.log(event.data, e);
+    }
   }
-  catch(e) {
-    console.log(evt.data, e);
-  }
+
+  ws.onclose = function(e) {
+    console.log('Socket is closed. Reconnect will be attempted in 10 second.', e.reason);
+    setTimeout(function() {
+      connectWebsocket();
+    }, 10000);
+  };
+
+  ws.onerror = function(err) {
+    console.error('Socket encountered error: ', err.message, 'Closing socket');
+    ws.close();
+  };
 }
+connectWebsocket();
 
 function renderUpdatedPrice(newValue, oldValue) {
-  let diff = (newValue - oldValue).toFixed(2);
+  let diff = (newValue - oldValue).toFixed(digitsPrecision);
   if (parseFloat(diff) === 0 || oldValue <= 0 || newValue <= 0) {
     return;
   }
-  let strNewValue = (parseFloat(newValue).toFixed(2)).toString();
-  let strOldValue = (parseFloat(oldValue).toFixed(2)).toString();
+  let strNewValue = (parseFloat(newValue).toFixed(digitsPrecision)).toString();
+  let strOldValue = (parseFloat(oldValue).toFixed(digitsPrecision)).toString();
   if (strNewValue === strOldValue) {
     return;
   }
@@ -57,10 +81,10 @@ function renderUpdatedPrice(newValue, oldValue) {
   for (i = 0; i < strNewValue.length; i++){
     if (i === 0 && digitsLengthChanged) {
       if (isUp) {
-        html = html + "<span class='pump' id='tp0' data-link='" + strNewValue.charAt(0) +"'>&#8205;</span>";
+        html = html + "<span class='pump' id='tp0' data-link='" + strNewValue.charAt(0) + "'>" + BlankChar + "</span>";
       }
       else {
-        html = html + "<span class='dump' id='tp0' data-link='&#8205;'>" + strOldValue.charAt(0) + "</span>";
+        html = html + "<span class='dump' id='tp0' data-link='" + BlankChar + "'>" + strOldValue.charAt(0) + "</span>";
       }
     }
     else if (i < firstDiffIndex || strNewValue.charAt(i) === "." || strOldValue.charAt(i) === strNewValue.charAt(i)) {
@@ -78,20 +102,20 @@ function renderUpdatedPrice(newValue, oldValue) {
   $("." + strClass).each(function(){
     let newValue = $(this).attr("data-link");
     $(this).removeClass(strClass);
-    $(this).fadeOut(function() {
+    $(this).fadeOut(200, function() {
       $(this).addClass(strClass);
-      $(this).text(newValue).fadeIn();
+      $(this).text(newValue).fadeIn(300);
     });
   });
 }
 
 function renderDiff(newValue, oldValue) {
-  let diff = (newValue - oldValue).toFixed(2);
+  let diff = (newValue - oldValue).toFixed(digitsPrecision);
   if (parseFloat(diff) === 0 || oldValue <= 0 || newValue <= 0) {
     return;
   }
-  document.getElementById("diffUp").innerHTML = "&#8205;";
-  document.getElementById("diffDown").innerHTML = "&#8205;";
+  document.getElementById("diffUp").innerHTML = BlankChar;
+  document.getElementById("diffDown").innerHTML = BlankChar;
   let isUp = parseFloat(diff) > 0;
   if (isUp) {
     document.getElementById("diffUp").innerHTML = "+" + diff;
@@ -108,7 +132,16 @@ function getFirstDiffIndex(n, o) {
   return i;
 }
 
+function isBlank(str) {
+  return (!str || /^\s*$/.test(str));
+}
+
 function getCurrentPrice(vue) {
-  vue.currentPrice = $("#lastPrice").val();
+  if (Number.isFinite(profileFactor)){
+    vue.currentPrice = ($("#lastPrice").val() * parseFloat(profileFactor)).toFixed(digitsPrecision);
+  }
+  else {
+    vue.currentPrice = $("#lastPrice").val();
+  }
   // vue.currentPrice = (Math.random() * (10010.99 - 9990.01) + 9990.01).toFixed(2);  // test numbers
 }
