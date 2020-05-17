@@ -7,7 +7,7 @@ It reads Binance bitcoin USD trade at real-time and updates screen every 3 secon
 
 <img src="https://github.com/shibuyastarbucks/btc-ticker/blob/master/screenshot.png?raw=true" alt="screenshot" width="800"/>
 
-Tested on Moto G, it's the oldest that I did not throw away.
+It is best viewed in landscape mode. Tested on Moto G, it's the oldest that I did not throw away.
 
 ## Requirements
 1. Internet connection 
