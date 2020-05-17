@@ -1,6 +1,6 @@
 let profileFactor = window.location.hash.substr(1);
 let digitsPrecision = 2;
-if (!isBlank(profileFactor) && Number.isFinite(profileFactor)){
+if (!isBlank(profileFactor) && Number.isFinite(parseFloat(profileFactor))){
   profileFactor = parseFloat(profileFactor);
   digitsPrecision = 0;
 }
@@ -27,6 +27,12 @@ window.onload = function() {
     getCurrentPrice(price);
   }, rr * 1000);
 }
+
+let noSleep = new NoSleep();
+document.addEventListener('click', function enableNoSleep() {
+  document.removeEventListener('click', enableNoSleep, false);
+  noSleep.enable();
+}, false);
 
 function connectWebsocket() {
   const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
@@ -138,7 +144,7 @@ function isBlank(str) {
 
 function getCurrentPrice(vue) {
   if (Number.isFinite(profileFactor)){
-    vue.currentPrice = ($("#lastPrice").val() * parseFloat(profileFactor)).toFixed(digitsPrecision);
+    vue.currentPrice = ($("#lastPrice").val() * profileFactor).toFixed(digitsPrecision);
   }
   else {
     vue.currentPrice = $("#lastPrice").val();
