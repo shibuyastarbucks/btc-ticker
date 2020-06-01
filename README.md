@@ -14,6 +14,7 @@ It is best viewed in landscape mode. Tested on Moto G, it's the oldest that I di
 2. An Android phone with power adapter, also runs Chrome
 3. Install [Fullscreen Immersive by duna](https://play.google.com/store/apps/details?id=immersive.duna.com.immersivemode&hl=en) on the Play Store. It is to hide navigation bars on the device. You don't have to buy the app, the basic functions is enough to have it working nicely.
 4. Paper clip to make a phone stand, using [DIY Phone Stand](https://www.instructables.com/id/Paper-Clip-Mobile-Phone-Stand-2min-0-Project/) guide.
+5. Optional app [Keep Screen On](https://play.google.com/store/apps/details?id=eu.aboutall.android.tools.kepscreenon&hl=en) on the Play Store. It ensures the screen won't dim and sleep. In case the built-in keep screen awake behavior is overridden by the phone.
 
 ## Usages
 Browse to https://shibuyastarbucks.github.io/btc-ticker/
