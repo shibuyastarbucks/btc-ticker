@@ -5,6 +5,8 @@ if (!isBlank(profileFactor) && Number.isFinite(parseFloat(profileFactor))){
   digitsPrecision = 0;
 }
 const BlankChar = "&#8205;";
+const spotUrl = 'wss://stream.binance.com:9443/ws/btcusdt@trade';
+const futureUrl = 'wss://fstream.binance.com/ws/btcusdt@trade';
 
 window.onload = function() {
   let rr = 3; // refresh rate in seconds
@@ -34,8 +36,8 @@ document.addEventListener('click', function enableNoSleep() {
   noSleep.enable();
 }, false);
 
-function connectWebsocket() {
-  const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
+function connectWebsocket(wssUrl) {
+  const ws = new WebSocket(wssUrl);
 
   ws.onmessage = function(event) {
     try {
@@ -48,9 +50,9 @@ function connectWebsocket() {
   }
 
   ws.onclose = function(e) {
-    console.log('Socket is closed. Reconnect will be attempted in 10 second.', e.reason);
+    console.log('Spot WebSocket is closed. Connect to futures WebSocket will be attempted in 10 second.', e.reason);
     setTimeout(function() {
-      connectWebsocket();
+      connectWebsocket(futureUrl);
     }, 10000);
   };
 
@@ -59,7 +61,7 @@ function connectWebsocket() {
     ws.close();
   };
 }
-connectWebsocket();
+connectWebsocket(spotUrl);
 
 function renderUpdatedPrice(newValue, oldValue) {
   let diff = (newValue - oldValue).toFixed(digitsPrecision);
